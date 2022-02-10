@@ -17,7 +17,7 @@ export default function CheckoutProduct({ id, title, price, description, categor
                 <p className='text-xs my-2 line-clamp-3'>{description}</p>
                 <Currency quantity={price} currency='EUR' />
                 {rating.rate < 3 &&
-                    <div className='flex items-center space-x-2 mt-2'>
+                    <div className='flex items-center space-x-2 mt-'>
                         <img src="https://m.media-amazon.com/images/G/01/prime/marketing/slashPrime/amazon-prime-delivery-checkmark._CB659998231_.png" alt="prime" className='w-14' loading='lazy' />
                         <p className='text-xs text-gray-500'>
                             FREE Next-day delivery
