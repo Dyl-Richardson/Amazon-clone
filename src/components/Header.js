@@ -3,25 +3,20 @@ import Image from 'next/image'
 import { MenuIcon, SearchIcon, ShoppingCartIcon } from "@heroicons/react/outline"
 import { signIn, signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import { useSelector } from 'react-redux';
+import { selectItems } from '../slices/basketSlice';
 
 export default function Header() {
     const { data: session, status } = useSession()
     const router = useRouter()
+    const items = useSelector(selectItems)
 
-    console.log(session);
     return (
         <header>
             {/* Top */}
             <div className='flex flex-grow items-center bg-amazon_blue p-1 py-2'>
                 <div className='flex flex-grow mt-2 items-center sm:flex-grow-0'>
-                    <Image
-                        onClick={() => router.push("/")}
-                        src='https://d24wuq6o951i2g.cloudfront.net/img/events/id/457/457529905/assets/41a.amazon_logo_RGB_REV.png'
-                        width='150'
-                        height='40'
-                        objectFit='contain'
-                        className='cursor-pointer'
-                    />
+                    <Image onClick={() => router.push("/")} src='https://d24wuq6o951i2g.cloudfront.net/img/events/id/457/457529905/assets/41a.amazon_logo_RGB_REV.png' width='150' height='40' objectFit='contain' className='cursor-pointer' />
                 </div>
                 {/* Search bar */}
                 <div className='hidden sm:flex items-center h-10 rounded-md flex-grow bg-yellow-400 hover:bg-yellow-500 cursor-pointer'>
@@ -41,7 +36,7 @@ export default function Header() {
                     </div>
                     <div className='link relative flex items-center' onClick={() => router.push("/checkout")}>
                         <span className='absolute top-0 right-0 md:right-10 h-4 w-4 bg-yellow-400 text-center rounded-full text-black font-bold'>
-                            0
+                            {items.length}
                         </span>
                         <ShoppingCartIcon className='h-9' />
                         <p className='hidden md:inline font-extrabold md:text-sm mt-2'>Basket</p>
