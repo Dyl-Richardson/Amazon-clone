@@ -10,6 +10,7 @@ export default function Home({ products }) {
     <div className="bg-[#eaeded]">
       <Head>
         <title>Amazon 2.0</title>
+        <link rel="shortcut icon" href="amazon-icon.ico" type="image/x-icon" />
       </Head>
 
       <Header />
