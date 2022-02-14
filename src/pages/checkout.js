@@ -43,7 +43,6 @@ export default function Checkout() {
                             </h2>
 
                             <button disabled={session.status === 'unauthenticated'} className={`button mt-2 ${session.status === 'unauthenticated' && 'bg-gray-300 border-grey-200 cursor-not-allowed hover:bg-gray-300'}`}>
-                                {console.log(session)}
                                 {session.status === 'unauthenticated' ? 'Sign in to checkout' : 'Proceed to checkout'}
                             </button>
                         </>
