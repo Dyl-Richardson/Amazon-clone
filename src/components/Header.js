@@ -10,6 +10,7 @@ export default function Header() {
     const { data: session, status } = useSession()
     const router = useRouter()
     const items = useSelector(selectItems)
+    console.log(process.env.PERMISSION);
 
     return (
         <header>
