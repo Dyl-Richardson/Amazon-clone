@@ -6,12 +6,28 @@ import { selectItems, selectTotal } from '../slices/basketSlice';
 import CheckoutProduct from '../components/CheckoutProduct';
 import Currency from 'react-currency-formatter';
 import { useSession } from 'next-auth/react';
+import { loadStripe } from '@stripe/stripe-js';
+import axios from 'axios';
+const stripePromise = loadStripe(process.env.stripe_public_key)
 
 
 export default function Checkout() {
     const items = useSelector(selectItems)
     const total = useSelector(selectTotal)
     const session = useSession()
+
+    async function createCheckoutSession() {
+        const stripe = await stripePromise
+
+        // Call backend to create session
+        const data = { items: items, email: session.data.user.email }
+        const checkoutSession = await axios.post('/api/create-checkout-session', data)
+        const result = await stripe.redirectToCheckout({ sessionId: checkoutSession.data.id })
+
+        if (result.error) {
+            alert(result.error.message)
+        }
+    }
 
     return (
         <div className='bg-gray-100'>
@@ -42,7 +58,13 @@ export default function Checkout() {
                                 </span>
                             </h2>
 
-                            <button disabled={session.status === 'unauthenticated'} className={`button mt-2 ${session.status === 'unauthenticated' && 'bg-gray-300 border-grey-200 cursor-not-allowed hover:bg-gray-300'}`}>
+                            <button
+                                // Stripe
+                                role='link'
+                                onClick={createCheckoutSession}
+                                // disable if not connected
+                                disabled={session.status === 'unauthenticated'}
+                                className={`button mt-2 ${session.status === 'unauthenticated' && 'bg-gray-300 border-grey-200 cursor-not-allowed hover:bg-gray-300'}`}>
                                 {session.status === 'unauthenticated' ? 'Sign in to checkout' : 'Proceed to checkout'}
                             </button>
                         </>
